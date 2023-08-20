@@ -1,7 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kanban_task_managemant/presentition/ui/pages/homePage.dart';
+import 'package:kanban_task_app/presenatation/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,18 +9,19 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-        designSize: kIsWeb ? const Size(1440, 1024) : const Size(412, 892),
-        builder: (BuildContext context, child) {
-          return MaterialApp(
-            theme: ThemeData(
-              useMaterial3: true,
-            ),
+    return ScreenUtilInit(builder: (context, child) {
+      return MaterialApp(
+              theme: ThemeData(
+                
+                useMaterial3: true
+              ),
             debugShowCheckedModeBanner: false,
-            home: const HomePage(),
-          );
-        });
+            title: 'Flutter Demo',
+            home: HomePage(),
+        );
+     });
   }
 }

@@ -1,4 +1,4 @@
-# kanban_task_managemant
+# kanban_task_app
 
 A new Flutter project.
 

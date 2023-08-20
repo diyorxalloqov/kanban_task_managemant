@@ -1,6 +1,6 @@
 {
-    "name": "kanban_task_managemant",
-    "short_name": "kanban_task_managemant",
+    "name": "kanban_task_app",
+    "short_name": "kanban_task_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
