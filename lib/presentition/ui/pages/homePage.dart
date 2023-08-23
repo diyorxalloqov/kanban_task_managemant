@@ -11,7 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<String> _title = ["Todo", "Doing", "Done", "finish"];
+  final List<String> _title = ["Todo ozgarish", "Doing", "Done", "finish"];
   final List<int> _color = [0xff49C4E5, 0xff8471F2, 0xff67E2AE, 0xffE4EBFA];
   bool isCliked = false;
   bool isTap = false;
