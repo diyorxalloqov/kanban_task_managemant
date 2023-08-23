@@ -60,7 +60,32 @@ class _HomePageState extends State<HomePage> {
               child: const Icon(Icons.add, color: Colors.white),
             ),
           ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+          addWidth(10),
+          PopupMenuButton<String>(
+            onSelected: (String value) {
+              if (value == 'edit') {
+                //edit board
+                editBoardDialog();
+              } else if (value == 'delete') {
+                // delete board
+                deleteBoard();
+              }
+            },
+            itemBuilder: (BuildContext context) => [
+              const PopupMenuItem<String>(
+                value: 'edit',
+                child: Text('Edit Board'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'delete',
+                child: Text(
+                  'Delete Board',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+            child: Icon(Icons.more_vert),
+          )
         ],
       ),
       /////////////
@@ -127,6 +152,9 @@ class _HomePageState extends State<HomePage> {
                                   elevation: 10,
                                   clipBehavior: Clip.antiAlias,
                                   child: ListTile(
+                                    onLongPress: () {
+                                      deleteTask();
+                                    },
                                     onTap: () {
                                       editTaskDialog();
                                     },
@@ -157,150 +185,243 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ////////////////////////////
-  Future<void> editTaskDialog() async {
+  ///////////////////////
+  void deleteTask() async {
     return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        scrollable: true,
-        backgroundColor: Colors.white,
-        alignment: Alignment.topCenter,
-        insetPadding: const EdgeInsets.only(top: 10),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        title: const Text(
-          "Edit Task",
-          style: TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
-        ),
-        content: SizedBox(
-          height: 730.h,
-          width: 320.w,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              addHeigth(10),
-              const Text("Title"),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      hintText: "e.g. Take coffee break",
-                      hintStyle: TextStyle(
-                        color: const Color(0xFF000112).withOpacity(0.25),
-                      ),
-                      border: const OutlineInputBorder()),
+        context: context,
+        builder: (context) => AlertDialog(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              title: const Text(
+                "Delete this task?",
+                style: TextStyle(
+                  color: Color(0xFFEA5555),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              addHeigth(15),
-              const Text("Description"),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: TextFormField(
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                      isCollapsed: false,
-                      hintText:
-                          "e.g. It’s always good to take a break. This 15 minute break will  recharge the batteries a little.",
-                      hintStyle: TextStyle(
-                        color: const Color(0xFF000112).withOpacity(0.25),
-                      ),
-                      border: const OutlineInputBorder()),
-                ),
-              ),
-              addHeigth(15),
-              const Text("Subtask"),
-              addHeigth(10),
-              Row(
+              content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: "e.g. Make Coffee",
-                          hintStyle: TextStyle(
-                            color: const Color(0xFF000112).withOpacity(0.25),
-                          ),
-                          border: const OutlineInputBorder()),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
-                ],
-              ),
-              addHeigth(12),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: "e.g. Drink coffee & smile",
-                          hintStyle: TextStyle(
-                            color: const Color(0xFF000112).withOpacity(0.25),
-                          ),
-                          border: const OutlineInputBorder()),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
-                ],
-              ),
-              addHeigth(12),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple.shade50,
-                    fixedSize: const Size(double.infinity, 45)),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.add),
-                    Text("Add New Subtask"),
-                  ],
-                ),
-              ),
-              addHeigth(15),
-              const Text("Status"),
-              addHeigth(10),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: ExpansionTile(
-                  shape: BeveledRectangleBorder(),
-                  title: Text("Hello"),
-                  children: [
-                    Text("data"),
-                    Text("data"),
-                    Text("data"),
-                  ],
-                ),
-              ),
-              addHeigth(10),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff635FC7),
-                    fixedSize: Size(context.height, 40)),
-                child: const Text(
-                  "Create Task",
-                  style: TextStyle(
-                      color: Colors.white,
+                  const Text(
+                    "Are you sure you want to delete the ‘Build settings UI’ task and its subtasks? This action cannot be reversed.",
+                    style: TextStyle(
+                      color: Color(0xFF828FA3),
                       fontSize: 13,
-                      fontWeight: FontWeight.w700),
+                      fontWeight: FontWeight.w500,
+                      height: 1.77,
+                    ),
+                  ),
+                  addHeigth(24),
+                  ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFEA5555),
+                          fixedSize: const Size(295, 40)),
+                      child: const Center(
+                          child: Text(
+                        'Delete',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          height: 1.77,
+                        ),
+                      ))),
+                  addHeigth(16),
+                  ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0, fixedSize: const Size(295, 40)),
+                      child: const Center(
+                          child: Text(
+                        'Cancel',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF635FC7),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          height: 1.77,
+                        ),
+                      ))),
+                ],
+              ),
+            ));
+  }
+
+///////////
+  void deleteBoard() async {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              backgroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              title: const Text(
+                "Delete this board?",
+                style: TextStyle(
+                  color: Color(0xFFEA5555),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Are you sure you want to delete the ‘Platform Launch’ board? This action will remove all columns and tasks and cannot be reversed.",
+                    style: TextStyle(
+                      color: Color(0xFF828FA3),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                      height: 1.77,
+                    ),
+                  ),
+                  addHeigth(24),
+                  ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFEA5555),
+                          fixedSize: const Size(295, 40)),
+                      child: const Center(
+                          child: Text(
+                        'Delete',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          height: 1.77,
+                        ),
+                      ))),
+                  addHeigth(16),
+                  ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          elevation: 0, fixedSize: const Size(295, 40)),
+                      child: const Center(
+                          child: Text(
+                        'Cancel',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xFF635FC7),
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          height: 1.77,
+                        ),
+                      ))),
+                ],
+              ),
+            ));
+  }
+
+  ////////////////////////////
+  void editBoardDialog() async {
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              scrollable: true,
+              title: Text("Edit Board"),
+              backgroundColor: Colors.white,
+              titleTextStyle: TextStyle(
+                color: Color(0xFF000112),
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              content: SizedBox(
+                width: 343,
+                height: 413,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Board Name",
+                      style: TextStyle(
+                        color: Color(0xFF828FA3),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    addHeigth(10),
+                    TextFormField(
+                      decoration: InputDecoration(
+                          hintText: "e.g. Web Design",
+                          border: OutlineInputBorder()),
+                    ),
+                    addHeigth(24),
+                    const Text(
+                      "Board Columns",
+                      style: TextStyle(
+                        color: Color(0xFF828FA3),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    addHeigth(8),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                            child: TextFormField(
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder()),
+                        )),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                    addHeigth(12),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                            child: TextFormField(
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder()),
+                        )),
+                        IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                    addHeigth(12),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.deepPurple.shade50,
+                          fixedSize: const Size(double.infinity, 45)),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.add),
+                          Text("Add New Column"),
+                        ],
+                      ),
+                    ),
+                    addHeigth(24),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff635FC7),
+                          fixedSize: Size(context.height, 40)),
+                      child: const Text(
+                        "Create New Board",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ));
   }
 
 ////////////////////
@@ -387,7 +508,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.add),
-                          Text("Add New Subtask"),
+                          Text("Add New Column"),
                         ],
                       ),
                     ),
@@ -528,11 +649,21 @@ class _HomePageState extends State<HomePage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.sunny,color: Colors.blueGrey,),
+                            const Icon(
+                              Icons.sunny,
+                              color: Colors.blueGrey,
+                            ),
                             addWidth(10),
-                            Switch.adaptive(value: true, onChanged: (value) {}),
+                            Switch.adaptive(
+                              value: isCliked, onChanged: (value) {
+                              isCliked = value;
+                              print(value);
+                            }),
                             addWidth(10),
-                            const Icon(Icons.nightlight_round_outlined,color: Colors.blueGrey,),
+                            const Icon(
+                              Icons.nightlight_round_outlined,
+                              color: Colors.blueGrey,
+                            ),
                           ],
                         ),
                       ),
@@ -687,6 +818,152 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //////////////////////////
+  Future<void> editTaskDialog() async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        backgroundColor: Colors.white,
+        alignment: Alignment.topCenter,
+        insetPadding: const EdgeInsets.only(top: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        title: const Text(
+          "Edit Task",
+          style: TextStyle(
+              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+        content: SizedBox(
+          height: 730.h,
+          width: 320.w,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              addHeigth(10),
+              const Text("Title"),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      hintText: "e.g. Take coffee break",
+                      hintStyle: TextStyle(
+                        color: const Color(0xFF000112).withOpacity(0.25),
+                      ),
+                      border: const OutlineInputBorder()),
+                ),
+              ),
+              addHeigth(15),
+              const Text("Description"),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: TextFormField(
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                      isCollapsed: false,
+                      hintText:
+                          "e.g. It’s always good to take a break. This 15 minute break will  recharge the batteries a little.",
+                      hintStyle: TextStyle(
+                        color: const Color(0xFF000112).withOpacity(0.25),
+                      ),
+                      border: const OutlineInputBorder()),
+                ),
+              ),
+              addHeigth(15),
+              const Text("Subtask"),
+              addHeigth(10),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          hintText: "e.g. Make Coffee",
+                          hintStyle: TextStyle(
+                            color: const Color(0xFF000112).withOpacity(0.25),
+                          ),
+                          border: const OutlineInputBorder()),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
+                ],
+              ),
+              addHeigth(12),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          hintText: "e.g. Drink coffee & smile",
+                          hintStyle: TextStyle(
+                            color: const Color(0xFF000112).withOpacity(0.25),
+                          ),
+                          border: const OutlineInputBorder()),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
+                ],
+              ),
+              addHeigth(12),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple.shade50,
+                    fixedSize: const Size(double.infinity, 45)),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.add),
+                    Text("Add New Subtask"),
+                  ],
+                ),
+              ),
+              addHeigth(15),
+              const Text("Status"),
+              addHeigth(10),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.grey,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: ExpansionTile(
+                  shape: BeveledRectangleBorder(),
+                  title: Text("Hello"),
+                  children: [
+                    Text("data"),
+                    Text("data"),
+                    Text("data"),
+                  ],
+                ),
+              ),
+              addHeigth(10),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff635FC7),
+                    fixedSize: Size(context.height, 40)),
+                child: const Text(
+                  "Create Task",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700),
+                ),
+              )
+            ],
           ),
         ),
       ),
