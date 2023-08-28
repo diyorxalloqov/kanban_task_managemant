@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kanban_task_managemant/domain/core/size.dart';
+import 'package:kanban_task_managemant/domain/core/constant/context/size.dart';
+import 'package:kanban_task_managemant/domain/service/token/updateAccessToken.dart';
 import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,12 +17,23 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<String> _title = ["Todo", "Doing", "Done", "finish"];
   final List<int> _color = [0xff49C4E5, 0xff8471F2, 0xff67E2AE, 0xffE4EBFA];
-  bool isCliked = false;
+  bool _isCliked = false;
   bool isTap = false;
+
+  @override
+  void initState() {
+    Timer.periodic(const Duration(minutes: 4), (timer) {
+      UpdateAccessToken().updateAccessToken();
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _isCliked = AdaptiveTheme.of(context).mode == AdaptiveThemeMode.dark;
+
     return Scaffold(
-      backgroundColor: const Color(0xffF4F7FD),
       appBar: AppBar(
         leading: Image.asset(
           "assets/group.png",
@@ -34,10 +49,10 @@ class _HomePageState extends State<HomePage> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Platform Launch",
                   style: TextStyle(
-                      color: Color(0xFF000112),
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
                       fontWeight: FontWeight.w700,
                       fontSize: 18),
                 ),
@@ -84,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ],
-            child: Icon(Icons.more_vert),
+            child: const Icon(Icons.more_vert),
           )
         ],
       ),
@@ -152,13 +167,9 @@ class _HomePageState extends State<HomePage> {
                                   elevation: 10,
                                   clipBehavior: Clip.antiAlias,
                                   child: ListTile(
-                                    onLongPress: () {
-                                      deleteTask();
-                                    },
                                     onTap: () {
-                                      editTaskDialog();
+                                      ontapTaskDialog();
                                     },
-                                    tileColor: Colors.white,
                                     title: const Text(
                                       "hello",
                                       style: TextStyle(
@@ -185,18 +196,190 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void ontapTaskDialog() async {
+    bool _isChechked = false;
+    bool _isCheck = false;
+    bool _isChecking = false;
+
+    return showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              insetPadding: const EdgeInsets.all(30),
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Research pricing points of \nvarious competitors and trial \ndifferent business models",
+                    style: TextStyle(
+                      color: Theme.of(context).textTheme.bodyLarge!.color,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  StatefulBuilder(builder: (context, state) {
+                    return PopupMenuButton<String>(
+                      onSelected: (String value) {
+                        if (value == 'edit') {
+                          //edit board
+                          editTaskDialog();
+                        } else if (value == 'delete') {
+                          // delete board
+                          deleteTask();
+                        }
+                      },
+                      itemBuilder: (BuildContext context) => [
+                        const PopupMenuItem<String>(
+                          value: 'edit',
+                          child: Text('Edit Task'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'delete',
+                          child: Text(
+                            'Delete Task',
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ],
+                      child: const Icon(Icons.more_vert),
+                    );
+                  })
+                ],
+              ),
+              content: StatefulBuilder(builder: (context, state) {
+                return SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                          "We know what we're planning to build for version one. Now we need to finalise the first pricing model we'll use. Keep iterating the subtasks until we have a coherent proposition."),
+                      addHeigth(24),
+                      Text(
+                        "Subtasks (2 of 3)",
+                        style: TextStyle(
+                            color:
+                                Theme.of(context).textTheme.bodyLarge!.color),
+                      ),
+                      addHeigth(16),
+                      SizedBox(
+                        height: 59.h,
+                        width: double.infinity,
+                        child: Card(
+                          color: const Color(0xffF4F7FD),
+                          elevation: 0,
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                  value: _isChechked,
+                                  onChanged: (v) {
+                                    state(
+                                      () {
+                                        _isChechked = v!;
+                                      },
+                                    );
+                                  }),
+                              const Flexible(
+                                child: Text(
+                                  "Research competitor pricing and business models",
+                                  style: TextStyle(overflow: TextOverflow.clip),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      addHeigth(8),
+                      SizedBox(
+                        height: 59.h,
+                        width: double.infinity,
+                        child: Card(
+                          color: const Color(0xffF4F7FD),
+                          elevation: 0,
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                  value: _isCheck,
+                                  onChanged: (v) {
+                                    state(() {
+                                      _isCheck = v!;
+                                    });
+                                  }),
+                              const Flexible(
+                                child: Text(
+                                  "Outline a business model that works for our solution",
+                                  style: TextStyle(overflow: TextOverflow.clip),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 59.h,
+                        width: double.infinity,
+                        child: Card(
+                          color: const Color(0xffF4F7FD),
+                          elevation: 0,
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                  value: _isChecking,
+                                  onChanged: (v) {
+                                    state(() {
+                                      _isChecking = v!;
+                                    });
+                                  }),
+                              const Flexible(
+                                child: Text(
+                                  "Surveying and testing",
+                                  style: TextStyle(overflow: TextOverflow.clip),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      addHeigth(context.height * 0.01),
+                      Text("Current Status"),
+                      addHeigth(10),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 1.0,
+                          ),
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: const ExpansionTile(
+                          shape: BeveledRectangleBorder(),
+                          title: Text("Hello"),
+                          children: [
+                            Text("data"),
+                            Text("data"),
+                            Text("data"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+            ));
+  }
+
   ///////////////////////
   void deleteTask() async {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6)),
-              title: const Text(
+              title: Text(
                 "Delete this task?",
                 style: TextStyle(
-                  color: Color(0xFFEA5555),
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
@@ -256,13 +439,12 @@ class _HomePageState extends State<HomePage> {
     return showDialog(
         context: context,
         builder: (context) => AlertDialog(
-              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6)),
-              title: const Text(
+              title: Text(
                 "Delete this board?",
                 style: TextStyle(
-                  color: Color(0xFFEA5555),
+                  color: Theme.of(context).textTheme.bodyLarge!.color,
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                 ),
@@ -323,8 +505,11 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (context) => AlertDialog(
               scrollable: true,
-              title: Text("Edit Board"),
-              backgroundColor: Colors.white,
+              title: Text(
+                "Edit Board",
+                style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyLarge!.color),
+              ),
               titleTextStyle: TextStyle(
                 color: Color(0xFF000112),
                 fontSize: 18,
@@ -432,7 +617,6 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => AlertDialog(
               scrollable: true,
               title: Text("Add New Board"),
-              backgroundColor: Colors.white,
               titleTextStyle: TextStyle(
                 color: Color(0xFF000112),
                 fontSize: 18,
@@ -538,139 +722,150 @@ class _HomePageState extends State<HomePage> {
     return showDialog(
         context: context,
         builder: (context) => Dialog(
-              backgroundColor: Colors.white,
               alignment: Alignment.topCenter,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8)),
               insetPadding: EdgeInsets.only(top: context.height * 0.08),
-              child: SizedBox(
-                height: 322.h,
-                width: 264.w,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text(
-                        "ALL BOARDS (3)",
-                        style: TextStyle(
-                          color: Color(0xFF828FA3),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 2.40,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 144,
-                      width: 240,
-                      child: ListView.builder(
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  height: 48.h,
-                                  width: 240.w,
-                                  decoration: BoxDecoration(
-                                      color: index == 0
-                                          ? const Color(0xff635FC7)
-                                          : null,
-                                      borderRadius:
-                                          const BorderRadius.horizontal(
-                                              right: Radius.circular(100))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 24),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          "assets/1.png",
-                                          width: 16,
-                                          color: index == 0
-                                              ? null
-                                              : const Color(0xFF828FA3),
-                                        ),
-                                        addWidth(12),
-                                        Text(
-                                          "Platform Launch",
-                                          style: TextStyle(
-                                            color: index == 0
-                                                ? Colors.white
-                                                : const Color(0xFF828FA3),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                        itemCount: 3,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: SizedBox(
-                        width: 235.w,
-                        height: 48.h,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 24),
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                "assets/1.png",
-                                width: 16,
-                                color: const Color(0xff635FC7),
-                              ),
-                              addWidth(12),
-                              const Text(
-                                "+ Create New Board",
-                                style: TextStyle(
-                                  color: Color(0xff635FC7),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              )
-                            ],
+              child: StatefulBuilder(builder: (context, setStateInside) {
+                return SizedBox(
+                  height: 322.h,
+                  width: 264.w,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Text(
+                          "ALL BOARDS (3)",
+                          style: TextStyle(
+                            color: Color(0xFF828FA3),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 2.40,
                           ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Container(
-                        width: 235.w,
-                        height: 48.h,
-                        color: Colors.grey.shade300,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.sunny,
-                              color: Colors.blueGrey,
-                            ),
-                            addWidth(10),
-                            Switch.adaptive(
-                              value: isCliked, onChanged: (value) {
-                              isCliked = value;
-                              print(value);
-                            }),
-                            addWidth(10),
-                            const Icon(
-                              Icons.nightlight_round_outlined,
-                              color: Colors.blueGrey,
-                            ),
-                          ],
+                      SizedBox(
+                        height: 144,
+                        width: 240,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    height: 48.h,
+                                    width: 240.w,
+                                    decoration: BoxDecoration(
+                                        color: index == 0
+                                            ? const Color(0xff635FC7)
+                                            : null,
+                                        borderRadius:
+                                            const BorderRadius.horizontal(
+                                                right: Radius.circular(100))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 24),
+                                      child: Row(
+                                        children: [
+                                          Image.asset(
+                                            "assets/1.png",
+                                            width: 16,
+                                            color: index == 0
+                                                ? null
+                                                : const Color(0xFF828FA3),
+                                          ),
+                                          addWidth(12),
+                                          Text(
+                                            "Platform Launch",
+                                            style: TextStyle(
+                                              color: index == 0
+                                                  ? Colors.white
+                                                  : const Color(0xFF828FA3),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                          itemCount: 3,
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ),
+                      InkWell(
+                        onTap: () {},
+                        child: SizedBox(
+                          width: 235.w,
+                          height: 48.h,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 24),
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  "assets/1.png",
+                                  width: 16,
+                                  color: const Color(0xff635FC7),
+                                ),
+                                addWidth(12),
+                                const Text(
+                                  "+ Create New Board",
+                                  style: TextStyle(
+                                    color: Color(0xff635FC7),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: Container(
+                          width: 235.w,
+                          height: 48.h,
+                          color: Colors.grey.shade300,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.sunny,
+                                color: Colors.blueGrey,
+                              ),
+                              addWidth(10),
+                              Switch.adaptive(
+                                  value: _isCliked,
+                                  onChanged: (value) {
+                                    setStateInside(() {
+                                      _isCliked = value;
+                                      print(value);
+                                    });
+                                    final newBrightness = value
+                                        ? Brightness.dark
+                                        : Brightness.light;
+                                    AdaptiveTheme.of(context).setThemeMode(
+                                        newBrightness == Brightness.dark
+                                            ? AdaptiveThemeMode.dark
+                                            : AdaptiveThemeMode.light);
+                                  }),
+                              addWidth(10),
+                              const Icon(
+                                Icons.nightlight_round_outlined,
+                                color: Colors.blueGrey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
             ));
   }
 
@@ -678,23 +873,171 @@ class _HomePageState extends State<HomePage> {
   Future<void> addNewTaskDialog() async {
     return showDialog(
       context: context,
-      builder: (context) => SingleChildScrollView(
-        child: AlertDialog(
-          scrollable: true,
-          backgroundColor: Colors.white,
-          alignment: Alignment.topCenter,
-          insetPadding: const EdgeInsets.only(top: 10),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        alignment: Alignment.topCenter,
+        insetPadding: const EdgeInsets.only(top: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        title: const Text(
+          "Add New Task",
+          style: TextStyle(
+              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+        content: SizedBox(
+          height: 730.h,
+          width: 320.w,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                addHeigth(10),
+                const Text("Title"),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        hintText: "e.g. Take coffee break",
+                        hintStyle: TextStyle(
+                          color: const Color(0xFF000112).withOpacity(0.25),
+                        ),
+                        border: const OutlineInputBorder()),
+                  ),
+                ),
+                addHeigth(15),
+                const Text("Description"),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: TextFormField(
+                    maxLines: 3,
+                    decoration: InputDecoration(
+                        isCollapsed: false,
+                        hintText:
+                            "e.g. It’s always good to take a break. This 15 minute break will  recharge the batteries a little.",
+                        hintStyle: TextStyle(
+                          color: const Color(0xFF000112).withOpacity(0.25),
+                        ),
+                        border: const OutlineInputBorder()),
+                  ),
+                ),
+                addHeigth(15),
+                const Text("Subtask"),
+                addHeigth(10),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            hintText: "e.g. Make Coffee",
+                            hintStyle: TextStyle(
+                              color: const Color(0xFF000112).withOpacity(0.25),
+                            ),
+                            border: const OutlineInputBorder()),
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.cancel_outlined))
+                  ],
+                ),
+                addHeigth(12),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                            hintText: "e.g. Drink coffee & smile",
+                            hintStyle: TextStyle(
+                              color: const Color(0xFF000112).withOpacity(0.25),
+                            ),
+                            border: const OutlineInputBorder()),
+                      ),
+                    ),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.cancel_outlined))
+                  ],
+                ),
+                addHeigth(12),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple.shade50,
+                      fixedSize: const Size(double.infinity, 45)),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.add),
+                      Text("Add New Subtask"),
+                    ],
+                  ),
+                ),
+                addHeigth(15),
+                const Text("Status"),
+                addHeigth(10),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1.0,
+                    ),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: const ExpansionTile(
+                    shape: BeveledRectangleBorder(),
+                    title: Text("Hello"),
+                    children: [
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                    ],
+                  ),
+                ),
+                addHeigth(10),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff635FC7),
+                      fixedSize: Size(context.height, 40)),
+                  child: const Text(
+                    "Create Task",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ],
+            ),
           ),
-          title: const Text(
-            "Add New Task",
-            style: TextStyle(
-                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
-          ),
-          content: SizedBox(
-            height: 730.h,
-            width: 320.w,
+        ),
+      ),
+    );
+  }
+
+  //////////////////////////
+  Future<void> editTaskDialog() async {
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        scrollable: true,
+        alignment: Alignment.topCenter,
+        insetPadding: const EdgeInsets.only(top: 10),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        title: const Text(
+          "Edit Task",
+          style: TextStyle(
+              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
+        ),
+        content: SizedBox(
+          height: 730.h,
+          width: 320.w,
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -815,155 +1158,9 @@ class _HomePageState extends State<HomePage> {
                         fontSize: 13,
                         fontWeight: FontWeight.w700),
                   ),
-                ),
+                )
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  //////////////////////////
-  Future<void> editTaskDialog() async {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        scrollable: true,
-        backgroundColor: Colors.white,
-        alignment: Alignment.topCenter,
-        insetPadding: const EdgeInsets.only(top: 10),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        title: const Text(
-          "Edit Task",
-          style: TextStyle(
-              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w700),
-        ),
-        content: SizedBox(
-          height: 730.h,
-          width: 320.w,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              addHeigth(10),
-              const Text("Title"),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      hintText: "e.g. Take coffee break",
-                      hintStyle: TextStyle(
-                        color: const Color(0xFF000112).withOpacity(0.25),
-                      ),
-                      border: const OutlineInputBorder()),
-                ),
-              ),
-              addHeigth(15),
-              const Text("Description"),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: TextFormField(
-                  maxLines: 3,
-                  decoration: InputDecoration(
-                      isCollapsed: false,
-                      hintText:
-                          "e.g. It’s always good to take a break. This 15 minute break will  recharge the batteries a little.",
-                      hintStyle: TextStyle(
-                        color: const Color(0xFF000112).withOpacity(0.25),
-                      ),
-                      border: const OutlineInputBorder()),
-                ),
-              ),
-              addHeigth(15),
-              const Text("Subtask"),
-              addHeigth(10),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: "e.g. Make Coffee",
-                          hintStyle: TextStyle(
-                            color: const Color(0xFF000112).withOpacity(0.25),
-                          ),
-                          border: const OutlineInputBorder()),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
-                ],
-              ),
-              addHeigth(12),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: "e.g. Drink coffee & smile",
-                          hintStyle: TextStyle(
-                            color: const Color(0xFF000112).withOpacity(0.25),
-                          ),
-                          border: const OutlineInputBorder()),
-                    ),
-                  ),
-                  IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.cancel_outlined))
-                ],
-              ),
-              addHeigth(12),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple.shade50,
-                    fixedSize: const Size(double.infinity, 45)),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.add),
-                    Text("Add New Subtask"),
-                  ],
-                ),
-              ),
-              addHeigth(15),
-              const Text("Status"),
-              addHeigth(10),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: ExpansionTile(
-                  shape: BeveledRectangleBorder(),
-                  title: Text("Hello"),
-                  children: [
-                    Text("data"),
-                    Text("data"),
-                    Text("data"),
-                  ],
-                ),
-              ),
-              addHeigth(10),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff635FC7),
-                    fixedSize: Size(context.height, 40)),
-                child: const Text(
-                  "Create Task",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700),
-                ),
-              )
-            ],
           ),
         ),
       ),
