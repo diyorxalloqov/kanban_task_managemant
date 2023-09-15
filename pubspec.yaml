@@ -46,6 +46,8 @@ dependencies:
   equatable: ^2.0.5
   connectivity_plus: ^4.0.2
   flutter_screenutil: ^5.8.4
+  provider: ^6.0.5
+  adaptive_theme: ^3.3.0
 
 dev_dependencies:
   freezed:
