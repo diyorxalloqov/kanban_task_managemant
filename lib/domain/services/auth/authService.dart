@@ -26,12 +26,20 @@ class AuthService {
       if (response.statusCode == 201) {
         return RegisterModel.fromJson(response.data);
       } else {
-        print(response.statusCode);
-        return response.data;
+        return response.statusMessage.toString();
       }
     } on DioException catch (e) {
       print(e.message.toString());
-      return e.message.toString();
+      if (e.response?.statusCode == 400) {
+        print("Bu foydalanuvchi mavjud");
+        return "Bu foydalanuvchi mavjud";
+      } else if (e.type == DioExceptionType.unknown) {
+        print("he");
+        return "internetingizni tekshiring";
+      } else {
+        print("hi");
+        return e.message.toString();
+      }
     }
   }
 
@@ -54,7 +62,11 @@ class AuthService {
       }
     } on DioException catch (e) {
       print("hello");
-      return e.message.toString();
+      if (e.type == DioExceptionType.unknown) {
+        return "internetingizni tekshiring";
+      } else {
+        return e.message.toString();
+      }
     }
   }
 }

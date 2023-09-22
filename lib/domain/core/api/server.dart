@@ -1,9 +1,15 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class Server {
-  static const String server = "https://api-trello.fintechhub.uz";
+  // server
+  static final String server = dotenv.get("server");
 
   //receive Timeout
-  static const int receiveTimeout = 5000;
+  static const int receiveTimeout = 50;
 
   // connection  Timeout
-  static const int connectionTimeout = 5000;
+  static const int connectionTimeout = 50;
+
+  // send Timeout
+  static const int sendTimeout = 50;
 }

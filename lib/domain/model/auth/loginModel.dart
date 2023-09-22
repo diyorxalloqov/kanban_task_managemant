@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 part 'loginModel.g.dart';
 
@@ -44,12 +44,15 @@ class Data {
   @HiveField(1)
   final String phone;
   @HiveField(2)
-  final Item item;
+  final List<dynamic> boards;
+  @HiveField(3)
+  final List<dynamic> memberBoards;
 
   Data({
     required this.id,
     required this.phone,
-    required this.item,
+    required this.boards,
+    required this.memberBoards,
   });
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
@@ -59,52 +62,14 @@ class Data {
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         phone: json["phone"],
-        item: Item.fromJson(json["item"]),
+        boards: List<dynamic>.from(json["boards"].map((x) => x)),
+        memberBoards: List<dynamic>.from(json["member_boards"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "phone": phone,
-        "item": item.toJson(),
+        "boards": List<dynamic>.from(boards.map((x) => x)),
+        "member_boards": List<dynamic>.from(memberBoards.map((x) => x)),
       };
-}
-
-@HiveType(typeId: 2)
-class Item {
-  @HiveField(0)
-  final Boards boards;
-  @HiveField(1)
-  final Boards memberBoards;
-
-  Item({
-    required this.boards,
-    required this.memberBoards,
-  });
-
-  factory Item.fromRawJson(String str) => Item.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
-        boards: Boards.fromJson(json["boards"]),
-        memberBoards: Boards.fromJson(json["member_boards"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "boards": boards.toJson(),
-        "member_boards": memberBoards.toJson(),
-      };
-}
-
-@HiveType(typeId: 3)
-class Boards {
-  Boards();
-
-  factory Boards.fromRawJson(String str) => Boards.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Boards.fromJson(Map<String, dynamic> json) => Boards();
-
-  Map<String, dynamic> toJson() => {};
 }

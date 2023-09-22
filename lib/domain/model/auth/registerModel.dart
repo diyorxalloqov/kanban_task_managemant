@@ -4,7 +4,7 @@ class RegisterModel {
   RegisterModel({this.phone});
 
   RegisterModel.fromJson(Map<String, dynamic> json) {
-    phone = json['phone'] as String?;
+    phone = json['phone'];
   }
 
   Map<String, dynamic> toJson() {

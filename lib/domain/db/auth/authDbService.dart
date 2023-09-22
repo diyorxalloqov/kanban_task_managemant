@@ -41,7 +41,5 @@ class AuthDBService {
   static void registerAdapter() async {
     Hive.registerAdapter(LoginModelAdapter());
     Hive.registerAdapter(DataAdapter());
-    Hive.registerAdapter(ItemAdapter());
-    Hive.registerAdapter(BoardsAdapter());
   }
 }

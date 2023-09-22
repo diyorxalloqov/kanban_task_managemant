@@ -5,10 +5,12 @@ class KanbanTheme {
   static ThemeData get darkTheme => _darkTheme;
 
   static final ThemeData _lightTheme = ThemeData(
+      visualDensity: VisualDensity.adaptivePlatformDensity,
       useMaterial3: true,
       brightness: Brightness.light,
       scaffoldBackgroundColor: const Color(0xffF4F7FD),
-      appBarTheme: AppBarTheme(
+      cardTheme: const CardTheme(color: Color(0xffF4F7FD)),
+      appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xffFFFFFF),
         titleTextStyle: TextStyle(
             color: Color(0xFF000112),
@@ -16,17 +18,19 @@ class KanbanTheme {
             fontSize: 18),
       ),
       cardColor: Colors.white,
-      textTheme: TextTheme(bodyLarge: TextStyle(color: Colors.black)));
+      textTheme: const TextTheme(bodyLarge: TextStyle(color: Colors.black)));
 
   static final ThemeData _darkTheme = ThemeData(
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      useMaterial3: true,
+      cardTheme: const CardTheme(color: Color(0xff20212C)),
       brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         backgroundColor: Color(0xff2B2C37),
         titleTextStyle: TextStyle(
             color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18),
       ),
-      useMaterial3: true,
-      textTheme: TextTheme(bodyLarge: TextStyle(color: Colors.white)),
+      textTheme: const TextTheme(bodyLarge: TextStyle(color: Colors.white)),
       cardColor: const Color(0xff2B2C30).withBlue(1),
       scaffoldBackgroundColor: const Color(0xff20212C));
 }

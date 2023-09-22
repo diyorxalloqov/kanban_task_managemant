@@ -1,7 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:kanban_task_managemant/domain/db/tokenDBservice.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:kanban_task_managemant/domain/db/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/presentition/ui/auth/loginPage.dart';
 
 import 'homePage.dart';
@@ -17,19 +17,20 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3))
-        .then((value) => Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-          (route) => false)); // checkAccesToken(context)) this is a fix has
-     super.initState();
+        .then((value) => checkAccesToken(context));
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("Welcome"),
-      ),
+          child: Image.asset(
+        "assets/group.png",
+        width: 50,
+        fit: BoxFit.fill,
+      )),
     );
   }
 
@@ -37,18 +38,28 @@ class _SplashPageState extends State<SplashPage> {
     TokenDBService tokenDBService = TokenDBService();
     await tokenDBService.openBox();
 
-    String refreshToken =
-        tokenDBService.token!.get("token")["refreshToken"].toString();
-    if (refreshToken != null && refreshToken.isNotEmpty) {
-      // if refresh token is expired    agar refreshtoken eskirgan bolsa degan shartga tekshirish kerak
+    var tokenMap = tokenDBService.token?.get("token");
 
-      //Home
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-          (route) => false);
+    if (tokenMap != null) {
+      String? refreshToken = tokenMap["refreshToken"]?.toString();
+      bool isExpired = JwtDecoder.isExpired(refreshToken ?? "");
+
+      if (isExpired || refreshToken == null || refreshToken.isEmpty) {
+        // If refresh token is expired or empty, navigate to the login page
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+            (route) => false);
+      } else {
+        // Refresh token is valid, navigate to the home page
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const HomePage()),
+            (route) => false);
+      }
     } else {
-      //login
+      // Handle the case when the tokenMap is null
+      // You might want to navigate to the login page or handle it differently
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),

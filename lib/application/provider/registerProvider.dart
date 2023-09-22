@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanban_task_managemant/domain/model/auth/registerModel.dart';
-import 'package:kanban_task_managemant/domain/service/auth/authService.dart';
+import 'package:kanban_task_managemant/domain/services/auth/authService.dart';
 import 'package:kanban_task_managemant/presentition/ui/auth/loginPage.dart';
 
 class RegisterProvider extends ChangeNotifier {
@@ -11,6 +11,14 @@ class RegisterProvider extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController password1Controller = TextEditingController();
   final TextEditingController password2Controller = TextEditingController();
+
+  void clearTextFields() {
+    nameController.clear();
+    lastNameController.clear();
+    phoneController.clear();
+    password1Controller.clear();
+    password2Controller.clear();
+  }
 
   bool isLoading = false;
   String error = '';
@@ -34,6 +42,7 @@ class RegisterProvider extends ChangeNotifier {
     } else {
       isLoading = false;
       error = res;
+      print("$res xato");
       notifyListeners();
     }
   }

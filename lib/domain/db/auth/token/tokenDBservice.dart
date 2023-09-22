@@ -26,29 +26,30 @@ class TokenDBService {
     }
   }
 
-  Future<void> updateAccessToken(String accessToken) async {
-    await openBox();
+ Future<void> updateAccessToken(String accessToken) async {
+  await openBox();
 
-    // Get the token data
-    var tokenData = token!.get("token");
-    if (tokenData != null && tokenData is Map<dynamic, dynamic>) {
-      // Cast the tokenData to the expected map type
-      var alldata = tokenData as Map<String, dynamic>;
-
+  // Get the token data
+  var tokenData = token!.get("token");
+  if (tokenData != null && tokenData is Map<dynamic, dynamic>) {
+    // Check if the "refreshToken" key exists
+    if (tokenData.containsKey("refreshToken")) {
       // Update the access token
-      await token!.put("token", {
-        "refreshToken": alldata["refreshToken"],
-        "accessToken": accessToken,
-      });
-
+      tokenData["accessToken"] = accessToken;
+      await token!.put("token", tokenData);
+      
       print(tokenData.runtimeType);
-      print(token!.get("token")["accessToken"]);
+      print(tokenData["accessToken"]);
       print("success update db");
     } else {
-      print("Invalid token data format");
+      print("Missing 'refreshToken' key in token data");
     }
-    return;
+  } else {
+    print("Invalid token data format");
   }
+  return;
+}
+
   //  Future<void> updateAccessToken(String accessToken) async {
   //   await openBox();
 
