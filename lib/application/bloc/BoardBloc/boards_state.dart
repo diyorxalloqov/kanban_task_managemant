@@ -1,36 +1,49 @@
 part of 'boards_bloc.dart';
 
 @immutable
-abstract class BoardsState extends Equatable {}
+abstract class BoardsState extends Equatable {
+  const BoardsState();
+}
 
-class BoardsInitialState extends BoardsState {
+final class BoardsInitialState extends BoardsState {
+  const BoardsInitialState();
+
   @override
   List<Object?> get props => [];
 }
 
-class BoardsLoadingState extends BoardsState {
+final class BoardsLoadingState extends BoardsState {
+  const BoardsLoadingState();
   @override
   List<Object?> get props => [];
 }
 
-class BoardsErrorState extends BoardsState {
+final class BoardsErrorState extends BoardsState {
   final String? errorMessage;
   final String? errorMessageBoardList;
   final String? deleteErorMessage;
+  final String? putErrorMessage;
 
-  BoardsErrorState({this.errorMessage, this.errorMessageBoardList, this.deleteErorMessage});
+  const BoardsErrorState(
+      {this.errorMessage,
+      this.errorMessageBoardList,
+      this.deleteErorMessage,
+      this.putErrorMessage});
 
   @override
-  List<Object?> get props => [errorMessage, errorMessageBoardList, errorMessage];
+  List<Object?> get props =>
+      [errorMessage, errorMessageBoardList, errorMessage, putErrorMessage];
 }
 
-class BoardsCompleteState extends BoardsState {
+final class BoardsCompleteState extends BoardsState {
   final CreateBoardsModel? data;
   final List<BoardsListModel>? boardList;
   final String? deleteMessage;
+  final String? putMessage;
 
-  BoardsCompleteState({this.data, this.boardList, this.deleteMessage});
+  const BoardsCompleteState(
+      {this.data, this.boardList, this.deleteMessage, this.putMessage});
 
   @override
-  List<Object?> get props => [data, boardList, deleteMessage];
+  List<Object?> get props => [data, boardList, deleteMessage, putMessage];
 }

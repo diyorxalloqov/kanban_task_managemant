@@ -8,8 +8,8 @@ class AccessModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['access'] = this.access;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['access'] = access;
     return data;
   }
 }

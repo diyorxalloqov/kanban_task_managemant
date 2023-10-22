@@ -157,7 +157,7 @@ class _OnTapTaskDialogState extends State<OnTapTaskDialog> {
               ),
             ),
             addHeigth(context.height * 0.01),
-            Text("Current Status"),
+            const Text("Current Status"),
             addHeigth(10),
             Container(
               decoration: BoxDecoration(

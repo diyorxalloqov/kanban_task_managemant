@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kanban_task_managemant/application/bloc/BoardBloc/boards_bloc.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/size.dart';
 import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
+import 'package:kanban_task_managemant/presentition/ui/widgets/expension_tile_widget.dart';
 
 class AddNewTaskDialog extends StatefulWidget {
-  const AddNewTaskDialog({super.key});
+  final int taskConditionid;
+  final int taskId;
+  final int currenIndex;
+  final BoardsCompleteState state;
+  const AddNewTaskDialog({
+    super.key,
+    required this.state,
+    required this.currenIndex,
+    required this.taskConditionid,
+    required this.taskId,
+  });
 
   @override
   State<AddNewTaskDialog> createState() => _AddNewTaskDialogState();
@@ -52,9 +64,7 @@ class _AddNewTaskDialogState extends State<AddNewTaskDialog> {
                       isCollapsed: false,
                       hintText:
                           "e.g. It’s always good to take a break. This 15 minute break will  recharge the batteries a little.",
-                      hintStyle: TextStyle(
-                      
-                      ),
+                      hintStyle: TextStyle(),
                       border: OutlineInputBorder()),
                 ),
               ),
@@ -68,8 +78,7 @@ class _AddNewTaskDialogState extends State<AddNewTaskDialog> {
                     child: TextFormField(
                       decoration: const InputDecoration(
                           hintText: "e.g. Make Coffee",
-                          hintStyle: TextStyle(
-                          ),
+                          hintStyle: TextStyle(),
                           border: OutlineInputBorder()),
                     ),
                   ),
@@ -83,11 +92,10 @@ class _AddNewTaskDialogState extends State<AddNewTaskDialog> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      decoration:const InputDecoration(
+                      decoration: const InputDecoration(
                           hintText: "e.g. Drink coffee & smile",
-                          hintStyle: TextStyle(
-                          ),
-                          border:  OutlineInputBorder()),
+                          hintStyle: TextStyle(),
+                          border: OutlineInputBorder()),
                     ),
                   ),
                   IconButton(
@@ -118,14 +126,11 @@ class _AddNewTaskDialogState extends State<AddNewTaskDialog> {
                   ),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: const ExpansionTile(
-                  shape: BeveledRectangleBorder(),
-                  title: Text("Hello"),
-                  children: [
-                    Text("data"),
-                    Text("data"),
-                    Text("data"),
+                child: ExpansionTileWidget(
+                  list: [
+                    "sss"
                   ],
+                  // list: widget.state.boardList![widget.currenIndex].taskConditions!,
                 ),
               ),
               addHeigth(10),

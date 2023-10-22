@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:kanban_task_managemant/domain/db/auth/token/tokenDBservice.dart';
+import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/presentition/ui/auth/loginPage.dart';
 
 import 'homePage.dart';
@@ -26,8 +29,8 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: Image.asset(
-        "assets/group.png",
+          child: SvgPicture.asset(
+        "assets/group.svg",
         width: 50,
         fit: BoxFit.fill,
       )),
@@ -48,7 +51,7 @@ class _SplashPageState extends State<SplashPage> {
         // If refresh token is expired or empty, navigate to the login page
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
+            MaterialPageRoute(builder: (context) => const LoginPage()),
             (route) => false);
       } else {
         // Refresh token is valid, navigate to the home page
@@ -62,7 +65,7 @@ class _SplashPageState extends State<SplashPage> {
       // You might want to navigate to the login page or handle it differently
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
           (route) => false);
     }
   }

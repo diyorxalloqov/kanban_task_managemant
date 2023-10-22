@@ -37,8 +37,7 @@ class BoardsListModel {
       data['creator'] = creator!.toJson();
     }
     if (taskConditions != null) {
-      data['task_conditions'] =
-          taskConditions!.map((v) => v.toJson()).toList();
+      data['task_conditions'] = taskConditions!.map((v) => v.toJson()).toList();
     }
     data['created_at'] = createdAt;
     data['update_at'] = updateAt;

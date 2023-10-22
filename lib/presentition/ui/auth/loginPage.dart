@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kanban_task_managemant/application/provider/loginProvider.dart';
+import 'package:kanban_task_managemant/application/provider/auth/loginProvider.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/size.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/theme_extension.dart';
+import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/presentition/ui/auth/registerPage.dart';
 import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -185,8 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                             child: Center(
                                 child: loginProvider.isLoading
                                     ? const CircularProgressIndicator.adaptive(
-                                        backgroundColor: Colors.white
-                                      )
+                                        backgroundColor: Colors.white)
                                     : const Text(
                                         "Login",
                                         style: TextStyle(
@@ -194,12 +194,15 @@ class _LoginPageState extends State<LoginPage> {
                                       ))),
                       ),
                       TextButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const RegisterPage()),
-                                (route) => false);
+                          onPressed: () async {
+                            await TokenDBService().getToken();
+                            Future.delayed(const Duration(seconds: 1)).then(
+                                (value) => Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const RegisterPage()),
+                                    (route) => false));
                           },
                           child: const Text(
                             "Don't have an accaunt? Register",

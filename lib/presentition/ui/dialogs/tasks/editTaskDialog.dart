@@ -124,7 +124,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                   ),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                child: ExpansionTile(
+                child: const ExpansionTile(
                   shape: BeveledRectangleBorder(),
                   title: Text("Hello"),
                   children: [
@@ -139,15 +139,32 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff635FC7),
-                    fixedSize: Size(context.height, 40)),
+                    fixedSize: Size(context.width, 40)),
                 child: const Text(
-                  "Create Task",
+                  "Edit Task",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.w700),
                 ),
-              )
+              ),
+             ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              style: ElevatedButton.styleFrom(
+                  elevation: 0, fixedSize: Size(context.width, 40)),
+              child: const Center(
+                  child: Text(
+                'Cancel',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFF635FC7),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  height: 1.77,
+                ),
+              ))),
             ],
           ),
         ),

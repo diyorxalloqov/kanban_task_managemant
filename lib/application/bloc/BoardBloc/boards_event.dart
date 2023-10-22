@@ -28,5 +28,15 @@ final class BoardDeleteEvent extends BoardsEvent {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [id];
+}
+
+final class BoardPutEvent extends BoardsEvent {
+  final int id;
+  final String newTitle;
+  const BoardPutEvent({required this.id, required this.newTitle});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [id, newTitle];
 }

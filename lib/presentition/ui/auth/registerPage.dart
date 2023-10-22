@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanban_task_managemant/application/provider/registerProvider.dart';
+import 'package:kanban_task_managemant/application/provider/auth/registerProvider.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/size.dart';
-import 'package:kanban_task_managemant/domain/services/auth/authService.dart';
 import 'package:kanban_task_managemant/presentition/ui/auth/loginPage.dart';
 import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
