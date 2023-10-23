@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:kanban_task_managemant/domain/core/api/api.dart';
 import 'package:kanban_task_managemant/domain/core/api/baseoption.dart';
-import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
+import 'package:kanban_task_managemant/domain/source/db/hive/auth/token/tokenDBservice.dart';
 // import 'package:kanban_task_managemant/domain/model/board/boardsListModel.dart';
 
 class TaskCondationService {

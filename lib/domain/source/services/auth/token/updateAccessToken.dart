@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:kanban_task_managemant/domain/core/api/api.dart';
 import 'package:kanban_task_managemant/domain/core/api/baseoption.dart';
-import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
+import 'package:kanban_task_managemant/domain/source/db/hive/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/domain/model/auth/accessTokenModel.dart';
 
 class UpdateAccessTokenService {
   Future<dynamic> updateAccessToken() async {
-   final TokenDBService tokenDBService = TokenDBService();
+    final TokenDBService tokenDBService = TokenDBService();
     await tokenDBService.openBox();
 
     var refreshToken =

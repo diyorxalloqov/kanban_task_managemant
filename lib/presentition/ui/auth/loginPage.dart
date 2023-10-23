@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kanban_task_managemant/application/blocs/BoardBloc/boards_bloc.dart';
 import 'package:kanban_task_managemant/application/provider/auth/loginProvider.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/size.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/theme_extension.dart';
-import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
+import 'package:kanban_task_managemant/domain/source/db/hive/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/presentition/ui/auth/registerPage.dart';
 import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -177,6 +178,9 @@ class _LoginPageState extends State<LoginPage> {
                               if (loginControllerKey.currentState!.validate()) {
                                 loginProvider.logins(context).then(
                                     (value) => loginProvider.clearTextFields());
+                                context
+                                    .read<BoardsBloc>()
+                                    .add(const BoardsListGetEvent());
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -195,7 +199,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextButton(
                           onPressed: () async {
-                            await TokenDBService().getToken();
                             Future.delayed(const Duration(seconds: 1)).then(
                                 (value) => Navigator.pushAndRemoveUntil(
                                     context,

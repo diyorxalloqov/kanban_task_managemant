@@ -5,15 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:kanban_task_managemant/application/bloc/bloc/task_condation_bloc.dart';
+import 'package:kanban_task_managemant/application/blocs/BoardBloc/boards_bloc.dart';
+import 'package:kanban_task_managemant/application/blocs/task_contiditon/task_condation_bloc.dart';
 import 'package:kanban_task_managemant/application/provider/auth/loginProvider.dart';
 import 'package:kanban_task_managemant/application/provider/auth/registerProvider.dart';
 import 'package:kanban_task_managemant/domain/core/theme/theme_data.dart';
-import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/presentition/ui/pages/splashPage.dart';
 import 'package:provider/provider.dart';
-import 'application/bloc/BoardBloc/boards_bloc.dart';
-import 'domain/source/db/auth/authDbService.dart';
+import 'domain/source/db/hive/auth/authDbService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

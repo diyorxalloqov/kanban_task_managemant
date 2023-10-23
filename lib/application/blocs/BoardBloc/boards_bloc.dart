@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kanban_task_managemant/domain/model/board/boardsListModel.dart';
-import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
+import 'package:kanban_task_managemant/domain/source/db/hive/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/domain/source/services/boards/board/boardService.dart';
 import 'package:meta/meta.dart';
 

@@ -71,23 +71,6 @@ class _LoginPageState extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: TextFormField(
-                          controller: registerProvider.nameController,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(), hintText: "Name"),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: TextFormField(
-                          controller: registerProvider.lastNameController,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: "Last name"),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: TextFormField(
                           focusNode: _focusNode,
                           controller: registerProvider.phoneController,
                           inputFormatters: [
@@ -121,7 +104,8 @@ class _LoginPageState extends State<RegisterPage> {
                               return "Iltimos bo'sh qoldirmang";
                             } else if (value.length != 13) {
                               return "Raqamni to'liq kiriting";
-                            } else if(registerProvider.error.isNotEmpty){ /// fix has
+                            } else if (registerProvider.error.isNotEmpty) {
+                              /// fix has
                               return registerProvider.error.toString();
                             } else {
                               return null;
@@ -132,7 +116,7 @@ class _LoginPageState extends State<RegisterPage> {
                       Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: TextFormField(
-                          controller: registerProvider.password1Controller,
+                          controller: registerProvider.passwordController,
                           obscureText: passwordVisibile,
                           obscuringCharacter: "*",
                           decoration: InputDecoration(
@@ -147,38 +131,6 @@ class _LoginPageState extends State<RegisterPage> {
                                           : const Icon(Icons.visibility))),
                               border: const OutlineInputBorder(),
                               hintText: "Password"),
-                          validator: (value) {
-                            if (value == null) {
-                              return "Iltimos bo'sh qoldirmang";
-                            } else if (value.length < 4) {
-                              return "Parol 4 ta belgidan kam bo'lmasligi kerak";
-                            } else if (value.length > 16) {
-                              return "Parol yaroqsiz";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: TextFormField(
-                          controller: registerProvider.password2Controller,
-                          obscuringCharacter: "*",
-                          obscureText: passconfirmVisible,
-                          decoration: InputDecoration(
-                              suffixIcon: Visibility(
-                                  child: IconButton(
-                                      onPressed: () {
-                                        passconfirmVisible =
-                                            !passconfirmVisible;
-                                        setState(() {});
-                                      },
-                                      icon: passconfirmVisible
-                                          ? const Icon(Icons.visibility_off)
-                                          : const Icon(Icons.visibility))),
-                              border: const OutlineInputBorder(),
-                              hintText: "Confirm password"),
                           validator: (value) {
                             if (value == null) {
                               return "Iltimos bo'sh qoldirmang";

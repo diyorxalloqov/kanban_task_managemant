@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kanban_task_managemant/domain/source/db/auth/authDbService.dart';
-import 'package:kanban_task_managemant/domain/source/db/auth/token/tokenDBservice.dart';
+import 'package:kanban_task_managemant/domain/source/db/hive/auth/authDbService.dart';
+import 'package:kanban_task_managemant/domain/source/db/hive/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/domain/model/auth/loginModel.dart';
 import 'package:kanban_task_managemant/domain/source/services/auth/authService.dart';
 import 'package:kanban_task_managemant/presentition/ui/pages/homePage.dart';
@@ -32,12 +32,13 @@ class LoginProvider extends ChangeNotifier {
       isLoading = false;
       data = res;
       print(res);
-      _authDBService.writeToDB(data!);
-      TokenDBService().writeToDB(data!.refresh, data!.access);
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-          (route) => false);
+      await _authDBService.writeToDB(data!);
+      await TokenDBService().writeToDB(data!.refresh, data!.access);
+      Future.delayed(Duration.zero).then((value) =>
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const HomePage()),
+              (route) => false));
       notifyListeners();
     } else {
       isLoading = false;

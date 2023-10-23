@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kanban_task_managemant/application/bloc/BoardBloc/boards_bloc.dart';
-import 'package:kanban_task_managemant/application/bloc/bloc/task_condation_bloc.dart';
+import 'package:kanban_task_managemant/application/blocs/BoardBloc/boards_bloc.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/size.dart';
-
-import '../../widgets/addSpace.dart';
+import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
 
 class EditBoardDialog extends StatefulWidget {
   final int currenIndex;

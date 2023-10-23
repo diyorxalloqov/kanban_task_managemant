@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:kanban_task_managemant/application/bloc/BoardBloc/boards_bloc.dart';
+import 'package:kanban_task_managemant/application/blocs/BoardBloc/boards_bloc.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/size.dart';
 import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
 

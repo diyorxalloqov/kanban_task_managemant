@@ -2,7 +2,7 @@ import 'package:kanban_task_managemant/domain/core/api/server.dart';
 
 class Api {
   /// auth
-  static final String register = "${Server.server}/user/register/";
+  static final String register = "${Server.server1}/api/regis/";
   static final String login = "${Server.server}/user/login/";
   static final String tokenRefresh = "${Server.server}/user/token/refresh/";
 

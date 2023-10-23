@@ -6,18 +6,12 @@ import 'package:kanban_task_managemant/presentition/ui/auth/loginPage.dart';
 class RegisterProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController password1Controller = TextEditingController();
-  final TextEditingController password2Controller = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   void clearTextFields() {
-    nameController.clear();
-    lastNameController.clear();
     phoneController.clear();
-    password1Controller.clear();
-    password2Controller.clear();
+    passwordController.clear();
   }
 
   bool isLoading = false;
@@ -27,17 +21,14 @@ class RegisterProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     dynamic res = await _authService.register(
-        password1: password1Controller.text,
-        password2: password2Controller.text,
-        phone: phoneController.text,
-        first_name: nameController.text,
-        last_name: lastNameController.text);
+        password: passwordController.text, phone: phoneController.text);
     if (res is RegisterModel) {
       isLoading = false;
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const LoginPage()),
-          (route) => false);
+      Future.delayed(Duration.zero).then((value) =>
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+              (route) => false));
       notifyListeners();
     } else {
       isLoading = false;
