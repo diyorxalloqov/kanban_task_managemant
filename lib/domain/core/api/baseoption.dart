@@ -4,7 +4,7 @@ import 'package:kanban_task_managemant/domain/source/db/hive/auth/token/tokenDBs
 
 class BaseOption {
   static final BaseOptions _dioOptions = BaseOptions(
-    baseUrl: Server.server,
+    baseUrl: Server.server1,
     sendTimeout: const Duration(seconds: Server.sendTimeout),
     connectTimeout: const Duration(seconds: Server.connectionTimeout),
     receiveTimeout: const Duration(seconds: Server.receiveTimeout),

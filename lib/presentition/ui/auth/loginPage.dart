@@ -3,7 +3,6 @@ import 'package:kanban_task_managemant/application/blocs/BoardBloc/boards_bloc.d
 import 'package:kanban_task_managemant/application/provider/auth/loginProvider.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/size.dart';
 import 'package:kanban_task_managemant/domain/core/constant/extensions/theme_extension.dart';
-import 'package:kanban_task_managemant/domain/source/db/hive/auth/token/tokenDBservice.dart';
 import 'package:kanban_task_managemant/presentition/ui/auth/registerPage.dart';
 import 'package:kanban_task_managemant/presentition/ui/widgets/addSpace.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -81,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                                 controller: loginProvider.loginphoneController,
                                 inputFormatters: [
                                   MaskTextInputFormatter(
-                                    mask: ' 00 000 00 00',
+                                    mask: '000000000',
                                     filter: {'0': RegExp(r'[0-9]')},
                                   )
                                 ],
@@ -109,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                                 validator: (value) {
                                   if (value == null) {
                                     return "Iltimos bo'sh qoldirmang";
-                                  } else if (value.length != 13) {
+                                  } else if (value.length != 9) {
                                     return "Raqamni to'liq kiriting";
                                   } else {
                                     return null;

@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:kanban_task_managemant/domain/model/auth/registerModel.dart';
 import 'package:kanban_task_managemant/domain/source/services/auth/authService.dart';
@@ -20,21 +21,31 @@ class RegisterProvider extends ChangeNotifier {
   Future<void> registers(BuildContext context) async {
     isLoading = true;
     notifyListeners();
-    dynamic res = await _authService.register(
+    
+    print(passwordController.text);
+    print(phoneController.text);
+    print(passwordController.text.trim());
+    print(phoneController.text.trim());
+
+    final Either<String, RegisterModel> res = await _authService.register(
         password: passwordController.text, phone: phoneController.text);
-    if (res is RegisterModel) {
-      isLoading = false;
-      Future.delayed(Duration.zero).then((value) =>
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-              (route) => false));
-      notifyListeners();
-    } else {
-      isLoading = false;
-      error = res;
-      print("$res xato");
-      notifyListeners();
-    }
+
+    res.fold(
+      (left) {
+        isLoading = false;
+        error = left;
+        print("$left xato");
+        notifyListeners();
+      },
+      (right) {
+        isLoading = false;
+        Future.delayed(Duration.zero).then((value) =>
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+                (route) => false));
+        notifyListeners();
+      },
+    );
   }
 }

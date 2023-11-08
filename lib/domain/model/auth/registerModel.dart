@@ -1,12 +1,21 @@
 class RegisterModel {
-  final String succes;
-  final int userId;
-  final String token;
-  RegisterModel(
-      {required this.succes, required this.token, required this.userId});
+  String? success;
+  int? userId;
+  String? token;
 
-  factory RegisterModel.fromJson(Map<String, dynamic> json) {
-    return RegisterModel(
-        succes: json['succes'], token: json['token'], userId: json['user_id']);
+  RegisterModel({this.success, this.userId, this.token});
+
+  RegisterModel.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    userId = json['user_id'];
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['success'] = success;
+    data['user_id'] = userId;
+    data['token'] = token;
+    return data;
   }
 }

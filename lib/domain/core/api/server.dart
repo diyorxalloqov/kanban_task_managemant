@@ -2,8 +2,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Server {
   // server
-  static final String server = dotenv.get("server");
-  static final String server1 = "http://192.168.42.197:8000";
+  static final String server1 = dotenv.get("server");
+  static final String server = "http://138.68.109.195";
 
   //receive Timeout
   static const int receiveTimeout = 50;

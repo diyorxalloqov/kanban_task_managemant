@@ -12,7 +12,6 @@ import 'package:kanban_task_managemant/application/provider/auth/registerProvide
 import 'package:kanban_task_managemant/domain/core/theme/theme_data.dart';
 import 'package:kanban_task_managemant/presentition/ui/pages/splashPage.dart';
 import 'package:provider/provider.dart';
-import 'domain/source/db/hive/auth/authDbService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +19,7 @@ void main() async {
   // Platform.isAndroid ? DeviceOrientation.landscapeLeft : DeviceOrientation.landscapeRight;
   await dotenv.load(fileName: '.env');
   await Hive.initFlutter();
-  AuthDBService.registerAdapter();
+  // AuthDBService.registerAdapter();
   runApp(MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => BoardsBloc()),

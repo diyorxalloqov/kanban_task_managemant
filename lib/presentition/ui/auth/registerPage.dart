@@ -73,9 +73,10 @@ class _LoginPageState extends State<RegisterPage> {
                         child: TextFormField(
                           focusNode: _focusNode,
                           controller: registerProvider.phoneController,
+                          keyboardType: TextInputType.number,
                           inputFormatters: [
                             MaskTextInputFormatter(
-                              mask: ' 00 000 00 00',
+                              mask: '000000000',
                               filter: {'0': RegExp(r'[0-9]')},
                             )
                           ],
@@ -102,7 +103,7 @@ class _LoginPageState extends State<RegisterPage> {
                           validator: (value) {
                             if (value == null) {
                               return "Iltimos bo'sh qoldirmang";
-                            } else if (value.length != 13) {
+                            } else if (value.length != 9) {
                               return "Raqamni to'liq kiriting";
                             } else if (registerProvider.error.isNotEmpty) {
                               /// fix has
